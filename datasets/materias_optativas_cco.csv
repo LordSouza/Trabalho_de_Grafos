@@ -1,0 +1,42 @@
+﻿CODIGO;DISCIPLINA;PER.;CH;PRE-REQUISITOS
+XDES08;Arquitetura de Software;7,9;64;XDES04
+XDES09;Padrões de Projeto;6,8;64;XDES03, XDES04
+XDES10;Engenharia de Software Experimental;6,8;64;XDES04
+XDES11;Tópicos em DES I;7,9;64;XDES04
+XDES12;Tópicos em DES II;7,9;64;XDES04
+XDES13;Desenvolvimento de Jogos;6,8;64;XDES01
+XDES14;Desenvolvimento para Dispositivos Móveis;7,9;64;XDES03
+XDES15;Reutilização de Software;7,9;64;SDES05, XDES02, XDES09
+SDES05;Engenharia de Software II;5,7;64;XDES04
+SDES06;Gerência de Projetos de Software;6,8;64;SDES05
+SDES07;Desenvolvimento de Sistemas Web;5,7;64;XDES04, XPAD01, XDES03
+ECOX21;Maratona de Programação I;-;48;STCO01
+ECOX22;Maratona de Programação II;-;48;ECOX21
+SPAD02;Bancos de Dados II;6,8;64;XPAD01
+SPAD03;Introdução à Análise de Dados;7,9;64;XMAC02
+XPAD04;Banco de Dados NoSQL;6,8;64;XPAD01
+XPAD08;Tópicos em PAD;6,7,8,9;64;XPAD01, SPAD03
+CMC006;Modelagem Geométrica e Visual;6,8;64;XMAC02, CMC005
+CMC007;Visão Computacional;7;64;XMAC01, CMC005
+XMC003;Métodos Exatos;6,8;64;XMAC02, SMAC03
+XMC004;Metaheurísticas;7,9;64;XMAC02, SMAC03
+XMC005;Tópicos em MCO;7;64;XMAC02, SMAC03
+XRSC06;Auditoria e Segurança de SI;7,9;64;XRSC01
+XRSC07;Computação em Nuvem;6,8;64;XRSC01
+XRSC08;Programação Paralela;7,9;64;XRSC01
+XRSC09;Sistemas Distribuídos;6,8;64;XRSC01
+XRSC10;Tópicos em RSC;7,9;64;XRSC01
+ECOS04;Simulação e Avaliação de Desempenho;6,8;32;XRSC09
+SADG01;Gestão e Governança;7,9;64;INTADM
+SADG02;Economia da Informação;-;64;
+INTADM;Introdução à Administração;7;32;
+IEPG01;Empreendedorismo e Inovação;7;48;
+IEPG14;Comportamento Organizacional I;-;48;
+ADM03E;Empreendedorismo Tecnológico;-;48;IEPG01
+XAHC06;Tópicos em AHC;-;64;
+-;Ciências Humanas e Sociais;-;48;
+ADM08H;Psicologia: As relações Indivíduo-Grupo;-;48;
+ADM52H;Comportamento Organizacional II;-;32;
+ADM54H;Gestão de Carreira;-;32;
+ADM58H;Psicologia Organizacional e do Trabalho;-;32;
+ADM51H;Ciências, Tecnologias e Organizações;-;48;
