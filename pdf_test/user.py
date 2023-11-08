@@ -1,6 +1,8 @@
 import sys
 import re
 from pypdf import PdfReader
+from icecream import ic
+ic.configureOutput(includeContext=True, contextAbsPath=False)
 
 
 class User:
@@ -21,6 +23,13 @@ class User:
         self.iech()
         self.iepl()
         self.iea()
+        # ic(self.materias_aluno)
+        ic(self.horas_integralizadas)
+        ic(self.semestre)
+        ic(self.mc)
+        ic(self.iech)
+        ic(self.iepl)
+        ic(self.iea)
 
     def integralizacao(self):
         pattern = r"Integralizado"
@@ -35,7 +44,7 @@ class User:
 
     def materias_aluno(self):
         # pattern declara o REGEX a ser procurado no texto
-        pattern = r"APR|APRN|CANC|MATR|REC|REPF|REPMF|REPN|REPNF|TRANC|TRANS|INCORP|CUMP"
+        pattern = r"APR|APRN|CANC|DISP|MATR|REC|REP|REPF|REPMF|REPN|REPNF|TRANC|TRANS|INCORP|CUMP"
         texto = []
         # le linha por linha e insere na lista "texto"
         for page in self.historico_texto:
@@ -43,11 +52,17 @@ class User:
                 if re.search(pattern, line):
                     texto.append(line.split(" "))
 
+        legenda = ["*", "e", "&", "@", "#", "§", "%"]
+
         self.materias_aluno = []
         # nao pega as ultimas treze linhas do texto pq é a parte que explica o que é cada situação de matéria, possivelmente vai ter q ajustar para fazer a limpeza dos outros
-        for i in range(len(texto) - 13):
-            self.materias_aluno.append(
-                [texto[i][1], texto[i][2], texto[i][3], texto[i][5]])
+        for i in range(len(texto) - 15):
+            if texto[i][0] in legenda:
+                self.materias_aluno.append(
+                    [texto[i][2], texto[i][3], texto[i][4], texto[i][6]])
+            else:
+                self.materias_aluno.append(
+                    [texto[i][1], texto[i][2], texto[i][3], texto[i][5]])
 
     def get_semestre(self):
         self.semestre = int(self.historico_texto[0][23])
@@ -81,21 +96,28 @@ class User:
     def iech(self):
         soma_carga = 0
         carga_total = 0
-        materias_aprovadas = ["APR", "APRN", "CUMP", "INCORP"]
-        materia_reprovadas = ["REP", "REPF", "REPMF", "REPN", "REPNF", "TRANC"]
+        materias_aprovadas = ["APR", "APRN"]
+        materia_reprovadas = ["APR", "APRN", "REP",
+                              "REPF", "REPMF", "REPN", "REPNF", "TRANC"]
         for materia in self.materias_aluno:
             if materia[0] in materias_aprovadas:
                 soma_carga += int(materia[2])
-            if materia[0] in materias_aprovadas or materia[0] in materia_reprovadas:
+            if materia[0] in materia_reprovadas:
                 carga_total += int(materia[2])
 
         self.iech = round(soma_carga / carga_total, 4)
 
     def iepl(self):
-        total = 3578
+        total = 2576
+        prazo_medio = 9
         deveria_cumprido = total / self.semestre
+        ic(deveria_cumprido)
+        self.horas_integralizadas = 816
+        self.iepl = round(self.horas_integralizadas /
+                          ((total*self.semestre)/prazo_medio), 4)
+        ic((total/self.semestre))
 
-        self.iepl = round(self.horas_integralizadas / deveria_cumprido, 4)
+        ic(self.iepl)
         if self.iepl > 1.1:
             self.iepl = 1.1
 
@@ -106,9 +128,3 @@ class User:
 if __name__ == "__main__":
 
     aluno = User(sys.argv[1])
-    print("SEMESTRE do aluno: " + str(aluno.semestre))
-
-    print("MC do aluno: " + str(aluno.mc))
-    print("IEPL do aluno: " + str(aluno.iepl))
-    print("IECH do aluno: " + str(aluno.iech))
-    print("IEA do aluno: " + str(aluno.iea))
