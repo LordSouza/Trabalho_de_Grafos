@@ -17,11 +17,11 @@ class CursoGenerico:
         self.__substituir_equivalentes()
         self.__materias_nao_concluidas()
         self.__gerar_lista_materias_possiveis()
+        self.calcularLiberam()
 
-    # TODO algo esta dando errado
     # materias em que foi cumprido o pre requesito
     def __gerar_lista_materias_possiveis(self):
-        self.materias_possiveis = self.materias_nao_concluidas
+        self.materias_possiveis = self.materias_nao_concluidas.copy()
         # self.materias_nao_concluidas
         # ic(self.materias_nao_concluidas)
         lista_codigo_concluidas = []
@@ -30,22 +30,10 @@ class CursoGenerico:
 
         for materia in self.materias_nao_concluidas:
             # se a materia n estiver na lista, quer dizer que o pre requisito ainda nao foi cuprido
-            # ic(materia)
             for mat in materia[4].split(", "):
-                ic(mat)
                 if mat not in lista_codigo_concluidas:
-                    # ic(self.materias_possiveis)
                     self.materias_possiveis.remove(materia)
-                    # ic(self.materias_possiveis)
-
                     break
-            #     if (materia_cursada[1] in mat):
-            #         ic(mat)
-            # if materia[0] == materia_cursada[1]:
-            #     ic(materia, materia_cursada)
-            #     self.materias_possiveis.remove(materia)
-        ic(self.materias_possiveis)
-        # ic(self.materias_obrigatorias.values.tolist())
 
     def __substituir_equivalentes(self):
         # Criar dicionários para equivalentes
@@ -76,35 +64,30 @@ class CursoGenerico:
 
     # TODO terminar essa parte
 
-    def calcularLiberam(self, materias_obrigatorias):
+    def calcularLiberam(self):
         # Cria um dicionario com o index sendo CODIGO da materia e os seus pre-requisitos como valores
-        requisitos = {
-            codigo: pre_requisitos
-            for codigo, pre_requisitos in zip(
-                materias_obrigatorias["CODIGO"],
-                materias_obrigatorias["PRE-REQUISITOS"],
-            )
-        }
+        requisitos = {}
+        for materias in self.materias_possiveis:
+            requisitos[materias[0]] = materias[-2]
+
+        self.materias_possiveis_com_pesos = self.materias_possiveis.copy()
+
         # Gera um vetor com todas as vezes que uma materia esta presente no Pre-requisito
         liberam = []
-        for materias in requisitos:
-            if requisitos[materias] != "-":
-                separar = requisitos[materias].split(", ")
-                for mat in separar:
+        for codigo, dependentes in requisitos.items():
+            if requisitos[codigo] != "-":
+                dependentes = dependentes.split(", ")
+                for mat in dependentes:
                     liberam.append(mat)
-        # testar essa parte
-        # Cria a coluna de quantas materias uma disciplina libera quando concluida
-        materias_obrigatorias["Liberam"] = 0
 
         # Faz a soma das materias de acordo com quantas vezes ela aparece no vetor
-        for materias in liberam:
-            materias_obrigatorias.loc[
-                materias_obrigatorias["CODIGO"] == materias, "Liberam"
-            ] += 1
+        for i in range(len(self.materias_possiveis_com_pesos)):
+            self.materias_possiveis_com_pesos[i].append(
+                len(liberam[i].split("\n")))
 
         # Ordena de modo que as disciplinas com mais 'Ligações' estejam acima
-        # Fomatacao do dataframe [index, CODIGO,	DISCIPLINA,	PER.,	CH,	PRE-REQUISITOS,	Liberam]
-        materias_obrigatorias = materias_obrigatorias.sort_values(
-            by="Liberam", ascending=False
-        )
-        return materias_obrigatorias
+        def internal_sort(e):
+            return e[-1]
+
+        self.materias_possiveis_com_pesos.sort(
+            reverse=False, key=internal_sort)
