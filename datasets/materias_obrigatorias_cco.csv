@@ -1,0 +1,33 @@
+﻿CODIGO;DISCIPLINA;PER.;CH;PRE-REQUISITOS;EQUIVALENTES
+XMAC01;Matemática Discreta;1;64;-;MAT015, MAT017, ECOM01A, ECOM11A, ECOM01, ECOM11, MAT057
+XDES01;Fundamentos de Programação;1;64;-;COM110, ECOP11A, ECOP01, ECOP11
+MAT00A;Cálculo A;1;64;-;MAT004, MAT001
+CRSC03;Arquitetura de Computadores I;1;64;-;CIC120, ELTD01A, ELTD11A, ELTD01, ELTD11
+CAHC04;Projeto Integrado;1;32;-;-
+MAT00B;Cálculo B;2;64;MAT00A;MAT002
+CTCO01;Algoritmos e Estruturas de Dados I;2;64;XDES01;COM111, STCO01, ECOP02A, ECOP02, ECOP12
+CRSC04;Arquitetura de Computadores II;2;64;CRSC03;CIC121, ECOX01
+CDES05;Programação Lógica e Funcional;2;64;XMAC01;CIC131
+CMAC04;Modelagem Computacional;2;64;MAT00A;CIC510
+XMAC02;Métodos Matemáticos para Análise de Dados;3;64;MAT00A, CTCO01, XMAC01;MAT00A, XMAC01, STCO01, CTCO01
+XDES04;Engenharia de Software I;3;64;-;COM210, ECOT01A, ECOT11A, ECOT01, ECOT11
+XDES02;Programação Orientada a Objetos;3;64;XDES01;COM220, ECOP13A, ECOP03, ECOP13
+CTCO02;Algoritmos e Estruturas de Dados II;3;64;CTCO01;COM112, STCO02
+CRSC02;Sistemas Operacionais;3;64;CTCO01, CRSC04;COM120, ECOS01A, ECOS11A, ECOS01
+CMAC03;Algoritmos em Grafos;3;64;CTCO02;SMAC03, SIN110
+XRSC01;Redes de Computadores;4;64;CRSC02;SRSC02, CRSC02
+XDES03;Programação Web;4;64;XDES02;COM222, ECOX05
+CTCO04;Projeto e Análise de Algoritmos;4;64;CTCO02;CIC110
+CRSC05;Sistemas Embarcados;4;64;CTCO01, CRSC04;ECOP04, ECOP14
+CMAC05;Cálculo Numérico para Computação;4;64;MAT00A;CIC250, MAT012
+XMCO01;Inteligência Artificial;5;64;XMAC02;CIC260, SIN260
+XPAD01;Banco de Dados I;5;64;CTCO02;STCO02, CTCO02
+CTCO05;Teoria da Computação;5;64;CDES05, CTCO04;CIC132
+CTCO03;Análise e Projeto Orientados a Objeto;5;64;XDES02;COM221
+CMCO05;Introdução à Computação Visual;5;64;MAT00A, XDES02;CIC271, ECOE19
+XAHC02;Interação Humano-Computador;6;64;XDES03;COM213
+CTCO06;Compiladores;6;64;CTCO05;CIC220, SIN132
+XAHC03;Metodologia Científica;7;64;TCC1;COM310
+XAHC01;Computação e Sociedade;7;64;-;COM312
+TCC1;Trabalho de Conclusão de Curso 1°;8;144;XAHC03;-
+TCC2;Trabalho de Conclusão de Curso 2°;9;216;TCC1;-

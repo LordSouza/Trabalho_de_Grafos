@@ -1,0 +1,35 @@
+﻿CODIGO;DISCIPLINA;PER.;CH;PRE-REQUISITOS;EQUIVALENTES
+XDES01;Fundamentos de Programação;1;64;-;COM110, ECOP11A, ECOP01, ECOP11
+XDES02;Programação Orientada a Objetos;2;64;XDES01;COM220, ECOP13A, ECOP03, ECOP13
+XDES03;Programação Web;3;64;XDES02;COM222, ECOX05
+XDES04;Engenharia de Software I;2;64;-;COM210, ECOT01A, ECOT11A, ECOT0, ECOT11
+SDES05;Engenharia de Software II;3;64;XDES04;COM211
+SDES06;Gerência de Projetos de Software;6;64;SDES05;COM212
+SDES07;Desenvolvimento de Sistemas Web;7;64;XDES03, XDES04, XPAD01;SIN412
+XPAD01;Banco de Dados I;4;64;STCO02;COM230, ECOT03A, ECOT13A, ECOT03, ECOT13
+SPAD02;Banco de Dados II;5;64;XPAD01;COM231
+SPAD03;Introdução à Análise de Dados;5;64;XMAC02;-
+XMCO01;Inteligência Artificial;6;64;XMAC02;CIC260, SIN260
+XRSC01;Redes de Computadores;5;64;SRSC02;COM240, TELC03A, TELC13A, TELC03, TELC13)
+SRSC02;Sistemas Operacionais;4;64;STCO01, SRSC03;COM120, ECOS01A, ECOS11A, ECOS01
+SRSC03;Organização e Arquitetura de Computadores;3;64;-;SIN120, CRSC04, ECOX01
+STCO01;Algoritmos e Programação I;2;64;XDES01;COM111, ECOP02, ECOP12
+STCO02;Algoritmos e Programação II;3;64;STCO01;COM112
+MAT00A;Cálculo A;1;64;-;MAT004, MAT001
+XMAC01;Matemática Discreta;2;64;-;MAT015, MAT017, ECOM01A, ECOM11A, ECOM01, ECOM11, MAT057
+XMAC02;Métodos Matemáticos para Análise de Dados;4;64;MAT00A, XMAC01, STCO01;MAT013
+SMAC03;Grafos;4;64;STCO02;SIN110, CMAC03
+IEPG14;Comportamento Organizacional I;4;32;-;SIN411
+ECN001;Economia;3;48;-;EPRI04, IEPG20
+IEPG01;Empreendedorismo e Inovação;1;48;-;EPR301
+ADM03E;Empreendedorismo Tecnológico;8;48;IEPG01;SIN312
+IEPG10;Engenharia Econômica;6;48;-;EPR502, EPR003, COM311
+ADM51E;Gestão do Conhecimento;5;48;-;-
+SADG01;Gestão e Governança de Tl;9;64;IEPG22;SIN210
+IEPG22;Administração Aplicada;1;32;-;SIN310
+IEPG04;Mapeamento de Processos;2;32;-;-
+XAHC01;Computação e Sociedade;8;64;-;COM312
+XAHC02;Interação Humano-Computador;7;64;XDES03;COM213
+XAHC03;Metodologia Científica;8;64;TCCI;COM310
+SAHC04;Projeto Integrado;1;64;-;-
+SAHC05;Fundamentos de Sistemas de Informação;1;64;-;SIN410
