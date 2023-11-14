@@ -1,5 +1,7 @@
 import pandas as pd
 import numpy as np
+from icecream import ic
+ic.configureOutput(includeContext=True, contextAbsPath=True)
 
 
 class CursoGenerico:
@@ -28,14 +30,17 @@ class CursoGenerico:
         materias_regulares_concluidas = []
         # Criar dicionários para equivalentes
         dict_equivalentes_regular = {}
-
+        ic(self.todas_materias_possiveis)
         # para cada linha nas optativas
-        for materia in self.todas_materias_possiveis:
+        for materia in self.todas_materias_possiveis.values.tolist():
             # equivalentes recebe as materias equivalentes
-            equivalentes = materia["EQUIVALENTES"].split(", ")
+            ic(materia[5:])
+            equivalentes = materia[5:]
+
             for equivalente in equivalentes:  # para cada equivalente em equivalentes
                 # obtativas_equivalentes[equivalente] vai receber o codigo
-                dict_equivalentes_regular[equivalente] = materia["CODIGO"]
+                dict_equivalentes_regular[equivalente] = materia[0]
+        # ic(dict_equivalentes_regular)
 
         # para um i ate o tamanho de disciplinas cursadas
         for materia in self.materias_concluidas:
