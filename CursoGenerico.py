@@ -18,6 +18,7 @@ class CursoGenerico:
         self.__materias_nao_concluidas()
         self.__gerar_lista_materias_possiveis()
 
+    # TODO algo esta dando errado
     # materias em que foi cumprido o pre requesito
     def __gerar_lista_materias_possiveis(self):
         self.materias_possiveis = self.materias_nao_concluidas
@@ -27,26 +28,24 @@ class CursoGenerico:
         for materia_aluno in self.materias_concluidas:
             lista_codigo_concluidas.append(materia_aluno[1])
 
-        for materia_cursada in self.materias_concluidas:
-            for materia in self.materias_nao_concluidas:
-                # ic(materia[4].split(", "))
-                for mat in materia[4].split(", "):
-                    if mat not in lista_codigo_concluidas:
-                        self.materias_possiveis.remove(materia)
-                        break
-                #     if (materia_cursada[1] in mat):
-                #         ic(mat)
-                # if materia[0] == materia_cursada[1]:
-                #     ic(materia, materia_cursada)
-                #     self.materias_possiveis.remove(materia)
+        for materia in self.materias_nao_concluidas:
+            # se a materia n estiver na lista, quer dizer que o pre requisito ainda nao foi cuprido
+            # ic(materia)
+            for mat in materia[4].split(", "):
+                ic(mat)
+                if mat not in lista_codigo_concluidas:
+                    # ic(self.materias_possiveis)
+                    self.materias_possiveis.remove(materia)
+                    # ic(self.materias_possiveis)
+
+                    break
+            #     if (materia_cursada[1] in mat):
+            #         ic(mat)
+            # if materia[0] == materia_cursada[1]:
+            #     ic(materia, materia_cursada)
+            #     self.materias_possiveis.remove(materia)
         ic(self.materias_possiveis)
-        list_experimento = self.materias_nao_concluidas
-        for i in self.materias_nao_concluidas:
-            if i in self.materias_possiveis:
-                ic(i)
-                list_experimento.remove(i)
-        # ic(list_experimento)
-        ic(self.materias_obrigatorias.values.tolist())
+        # ic(self.materias_obrigatorias.values.tolist())
 
     def __substituir_equivalentes(self):
         # Criar dicionários para equivalentes
