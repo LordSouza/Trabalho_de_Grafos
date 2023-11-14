@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 from icecream import ic
-ic.configureOutput(includeContext=True, contextAbsPath=True)
+ic.configureOutput(includeContext=True)
 
 
 class CursoGenerico:
@@ -14,54 +14,69 @@ class CursoGenerico:
         self.todas_materias_possiveis = pd.concat(
             [self.materias_obrigatorias, self.materias_optativas], ignore_index=True)
 
-        self.materias_concluidas_sem_equivalentes = self.__substituir_equivalentes()
+        self.__substituir_equivalentes()
         self.__materias_nao_concluidas()
         self.__gerar_lista_materias_possiveis()
 
+    # materias em que foi cumprido o pre requesito
     def __gerar_lista_materias_possiveis(self):
-        self.materias_possiveis = []
+        self.materias_possiveis = self.materias_nao_concluidas
+        # self.materias_nao_concluidas
+        # ic(self.materias_nao_concluidas)
+        lista_codigo_concluidas = []
+        for materia_aluno in self.materias_concluidas:
+            lista_codigo_concluidas.append(materia_aluno[1])
 
-        for materia in self.todas_materias_possiveis:
-            for materia_cursada in self.materias_concluidas_sem_equivalentes:
-                if materia['CODIGO'] != materia_cursada['CÓDIGO']:
-                    self.materias_possiveis.append(materia)
+        for materia_cursada in self.materias_concluidas:
+            for materia in self.materias_nao_concluidas:
+                # ic(materia[4].split(", "))
+                for mat in materia[4].split(", "):
+                    if mat not in lista_codigo_concluidas:
+                        self.materias_possiveis.remove(materia)
+                        break
+                #     if (materia_cursada[1] in mat):
+                #         ic(mat)
+                # if materia[0] == materia_cursada[1]:
+                #     ic(materia, materia_cursada)
+                #     self.materias_possiveis.remove(materia)
+        ic(self.materias_possiveis)
+        list_experimento = self.materias_nao_concluidas
+        for i in self.materias_nao_concluidas:
+            if i in self.materias_possiveis:
+                ic(i)
+                list_experimento.remove(i)
+        # ic(list_experimento)
+        ic(self.materias_obrigatorias.values.tolist())
 
     def __substituir_equivalentes(self):
-        materias_regulares_concluidas = []
         # Criar dicionários para equivalentes
         dict_equivalentes_regular = {}
-        ic(self.todas_materias_possiveis)
         # para cada linha nas optativas
         for materia in self.todas_materias_possiveis.values.tolist():
             # equivalentes recebe as materias equivalentes
-            ic(materia[5:])
             equivalentes = materia[5:]
-
             for equivalente in equivalentes:  # para cada equivalente em equivalentes
                 # obtativas_equivalentes[equivalente] vai receber o codigo
-                dict_equivalentes_regular[equivalente] = materia[0]
-        # ic(dict_equivalentes_regular)
-
-        # para um i ate o tamanho de disciplinas cursadas
+                dict_equivalentes_regular[materia[0]] = equivalente
         for materia in self.materias_concluidas:
-            # codigo vai receber o valor de self.materias_concluidas[i]
-            # se tiver o codigo em optativas_equivalentes
-            if (materia[1] in list(dict_equivalentes_regular)):
-                # troco o valor da self.materias_concluidas[i] pelo codigo da equivalente (optativa)
-                materias_regulares_concluidas.append(
-                    dict_equivalentes_regular[materia[1]])
-
-        return materias_regulares_concluidas
+            for key, value in dict_equivalentes_regular.items():
+                if materia[1] in value.split(", "):
+                    materia[1] = key
 
     # Cria uma lista com as materias não cursadas
     def __materias_nao_concluidas(self):
         self.materias_nao_concluidas = []
-        for materia in self.materias_obrigatorias:
-            if materia not in self.materias_concluidas_sem_equivalentes and \
-                    materia["PRE-REQUISITOS"].split(", ") in self.materias_concluidas_sem_equivalentes:
-                self.materias_nao_concluidas.append(materia)
+        # pega somente os codigos das materias cursadas
+        lista_codigo_concluidas = []
+        for materia_aluno in self.materias_concluidas:
+            lista_codigo_concluidas.append(materia_aluno[1])
+        # da append apenas para as materias qm não foram cursadas
+        for materia_curso in self.materias_obrigatorias.values.tolist():
+            if materia_curso[0] not in lista_codigo_concluidas and materia_curso not in self.materias_nao_concluidas:
+                self.materias_nao_concluidas.append(materia_curso)
 
     # TODO terminar essa parte
+
     def calcularLiberam(self, materias_obrigatorias):
         # Cria um dicionario com o index sendo CODIGO da materia e os seus pre-requisitos como valores
         requisitos = {
