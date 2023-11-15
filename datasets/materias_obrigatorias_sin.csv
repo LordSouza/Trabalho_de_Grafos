@@ -23,7 +23,7 @@ SRSC02;Sistemas Operacionais;4;64;STCO01, SRSC03;COM120, ECOS01A, ECOS11A, ECOS0
 SPAD02;Banco de Dados II;5;64;XPAD01;COM231
 ADM51E;Gestão do Conhecimento;5;48;-;-
 SPAD03;Introdução à Análise de Dados;5;64;XMAC02;-
-XRSC01;Redes de Computadores;5;64;SRSC02;COM240, TELC03A, TELC13A, TELC03, TELC13)
+XRSC01;Redes de Computadores;5;64;SRSC02;COM240, TELC03A, TELC13A, TELC03, TELC13
 IEPG10;Engenharia Econômica;6;48;-;EPR502, EPR003, COM311
 SDES06;Gerência de Projetos de Software;6;64;SDES05;COM212
 XMCO01;Inteligência Artificial;6;64;XMAC02;CIC260, SIN260

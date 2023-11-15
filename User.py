@@ -17,8 +17,8 @@ class User:
         self.__materias_aluno()
         self.__get_semestre()
         self.__check_curso()
-        self.__mc_calculo()
-        self.__iech_calculo()
+        self.mc = self.__mc_calculo(self.materias_aluno_cursadas)
+        self.__iech_calculo(self.materias_aluno_cursadas)
         self.__iepl_calculo()
         self.__iea_calculo()
         self.__materias_aprovadas_separacao()
@@ -78,23 +78,24 @@ class User:
                     self.curso = "CIÊNCIA DA COMPUTAÇÃO"
                     break
 
-    def __mc_calculo(self):
+    def __mc_calculo(self, materias_cursadas):
         soma_nota_carga = 0
         soma_carga = 0
         codigo_aprovacao = ["APR", "APRN", "CUMP", "INCORP"]
-        for materia in self.materias_aluno_cursadas:
+        for materia in materias_cursadas:
             if materia[3] != "--" and materia[0] in codigo_aprovacao:
                 soma_nota_carga += float(materia[2]) * float(materia[3])
                 soma_carga += float(materia[2])
-        self.mc = round(soma_nota_carga / soma_carga, 4)
+        # retorna mc
+        return round(soma_nota_carga / soma_carga, 4)
 
-    def __iech_calculo(self):
+    def __iech_calculo(self, materias_cursadas):
         soma_carga = 0
         carga_total = 0
         materias_aprovadas = ["APR", "APRN"]
         materia_reprovadas = ["APR", "APRN", "REP",
                               "REPF", "REPMF", "REPN", "REPNF", "TRANC"]
-        for materia in self.materias_aluno_cursadas:
+        for materia in materias_cursadas:
             if materia[0] in materias_aprovadas:
                 soma_carga += int(materia[2])
             if materia[0] in materia_reprovadas:

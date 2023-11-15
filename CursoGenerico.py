@@ -6,7 +6,7 @@ ic.configureOutput(includeContext=True)
 
 class CursoGenerico:
     def __init__(self, materias_obrigatorias_aluno, todas_materias, materias_concluidas):
-        self.materias_obrigatorias_aluno = materias_obrigatorias_aluno
+        self.materias_obrigatorias_aluno = materias_obrigatorias_aluno.values.tolist()
         self.todas_materias = todas_materias
         self.materias_concluidas = materias_concluidas
 
@@ -14,29 +14,29 @@ class CursoGenerico:
         self.__semestralidade()
         self.__materias_nao_concluidas()
         self.__gerar_lista_materias_possiveis()
-        self.__calcularLiberam()
+        # self.__calcularLiberam()
 
     def __substituir_equivalentes(self):
         # Criar dicionários para equivalentes
         dict_equivalentes_regular = {}
-
         # para cada linha nas optativas
-        for materia in self.todas_materias:
+        for materia in self.materias_obrigatorias_aluno:
             # equivalentes recebe as materias equivalentes
             equivalentes = materia[5]
-            for equivalente in equivalentes:  # para cada equivalente em equivalentes
+            # para cada equivalente em equivalentes
+            for equivalente in equivalentes.split(", "):
                 # obtativas_equivalentes[equivalente] vai receber o codigo
-                dict_equivalentes_regular[materia[0]] = equivalente
+                dict_equivalentes_regular[equivalente] = materia[0]
         for materia in self.materias_concluidas:
             for key, value in dict_equivalentes_regular.items():
-                if materia[1] in value.split(", "):
-                    materia[1] = key
+                if materia[1] == key:
+                    materia[1] = value
 
     def __semestralidade(self):
-
         for materia in self.todas_materias:
             materia.append(False)
 
+        # se for semestral, coloca como true
         for materia in self.todas_materias:
             for materias_check in self.todas_materias:
                 if materia[0] == materias_check[0] and \
@@ -45,9 +45,14 @@ class CursoGenerico:
                     materias_check[-1] = True
                     materia[-1] = True
                     break
-        ic(self.todas_materias)
+        for materia in self.todas_materias:
+            for materia_curso in self.materias_obrigatorias_aluno:
+                if materia_curso[0] == materia[0] and \
+                        len(materia_curso) < len(materia):
+                    materia_curso.append(materia[-1])
 
     # Cria uma lista com as materias não cursadas
+
     def __materias_nao_concluidas(self):
         self.materias_nao_concluidas = []
         # pega somente os codigos das materias cursadas
@@ -55,7 +60,7 @@ class CursoGenerico:
         for materia_aluno in self.materias_concluidas:
             lista_codigo_concluidas.append(materia_aluno[1])
         # da append apenas para as materias qm não foram cursadas
-        for materia_curso in self.materias_obrigatorias_aluno.values.tolist():
+        for materia_curso in self.materias_obrigatorias_aluno:
             if materia_curso[0] not in lista_codigo_concluidas and materia_curso not in self.materias_nao_concluidas:
                 self.materias_nao_concluidas.append(materia_curso)
 
@@ -63,7 +68,6 @@ class CursoGenerico:
     def __gerar_lista_materias_possiveis(self):
         self.materias_possiveis = self.materias_nao_concluidas.copy()
         # self.materias_nao_concluidas
-        # ic(self.materias_nao_concluidas)
         lista_codigo_concluidas = []
         for materia_aluno in self.materias_concluidas:
             lista_codigo_concluidas.append(materia_aluno[1])
