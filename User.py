@@ -121,3 +121,7 @@ class User:
     def __iea_calculo(self):
         self.iea = round(self.mc *
                          self.iech * self.iepl, 4)
+
+    def calcular_iea(self, materia):
+
+        pass
