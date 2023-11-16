@@ -1,5 +1,7 @@
 import re
 from pypdf import PdfReader
+from icecream import ic
+ic.configureOutput(includeContext=True)
 
 
 class User:
@@ -18,9 +20,10 @@ class User:
         self.__get_semestre()
         self.__check_curso()
         self.mc = self.__mc_calculo(self.materias_aluno_cursadas)
-        self.__iech_calculo(self.materias_aluno_cursadas)
-        self.__iepl_calculo()
-        self.__iea_calculo()
+        self.iech = self.__iech_calculo(self.materias_aluno_cursadas)
+        self.iepl = self.__iepl_calculo()
+        self.iea = self.__iea_calculo(self.mc, self.iech, self.iepl)
+        self.ira = self.__ira_calculo(self.materias_aluno_cursadas)
         self.__materias_aprovadas_separacao()
 
     def __materias_aluno(self):
@@ -49,6 +52,7 @@ class User:
                 self.materias_aluno_cursadas.append(
                     [materias_sem_tratamento[i][2], materias_sem_tratamento[i][3], materias_sem_tratamento[i][4], materias_sem_tratamento[i][6]])
             else:
+                ic(materias_sem_tratamento[i])
                 self.materias_aluno_cursadas.append(
                     [materias_sem_tratamento[i][1], materias_sem_tratamento[i][2], materias_sem_tratamento[i][3], materias_sem_tratamento[i][5]])
 
@@ -93,19 +97,22 @@ class User:
         soma_carga = 0
         carga_total = 0
         materias_aprovadas = ["APR", "APRN"]
-        materia_reprovadas = ["APR", "APRN", "REP",
-                              "REPF", "REPMF", "REPN", "REPNF", "TRANC"]
+        materia_reprovadas = ["APR", "APRN", "REP", "REPF",
+                              "REPMF", "REPN", "REPNF", "TRANC"]
         for materia in materias_cursadas:
             if materia[0] in materias_aprovadas:
                 soma_carga += int(materia[2])
             if materia[0] in materia_reprovadas:
                 carga_total += int(materia[2])
 
-        self.iech = round(soma_carga / carga_total, 4)
+        return round(soma_carga / carga_total, 4)
 
-    def __iepl_calculo(self):
+    def __iepl_calculo(self, materia_extra: any = None):
         carga_necessaria = int(self.cargas_horarias[0][4][1:])
         carga_cumprida = int(self.cargas_horarias[0][3][1:])
+
+        if (materia_extra != None):
+            carga_cumprida += materia_extra
 
         periodo_minimo = 9
         # se n for sin, é cco, que possui periodo minimo de 8
@@ -113,16 +120,59 @@ class User:
             periodo_minimo = 8
 
         carga_media_obrigatoria = carga_necessaria / periodo_minimo
-        self.iepl = round((carga_cumprida) / ((self.semestre - 1)
-                                              * carga_media_obrigatoria), 5)
+        iepl = round((carga_cumprida) / ((self.semestre - 1)
+                                         * carga_media_obrigatoria), 5)
 
-        if self.iepl > 1.1:
-            self.iepl = 1.1
+        if iepl > 1.1:
+            iepl = 1.1
 
-    def __iea_calculo(self):
-        self.iea = round(self.mc *
-                         self.iech * self.iepl, 4)
+        return iepl
 
-    def calcular_iea(self, materia):
+    def __iea_calculo(self, mc, iech, iepl):
+        return round(mc * iech * iepl, 4)
 
-        pass
+    def calcular_iea(self, codigo, carga_horaria):
+        """Recebe o codigo da materia e carga horaria
+
+        Args:
+            codigo (string): exemplo => 'XDES01'
+            carga_horaria (int): exemplo => 64
+
+        Returns:
+            iea: retorna o iea com a materia adicionada, supondo que o aluno tire 6
+        """
+        materia = list([codigo, str(carga_horaria)])
+        materia.insert(0, "APR")
+        materia.append('6.0')
+        calcula_materias = self.materias_aluno_cursadas.copy()
+        calcula_materias.append(materia)
+        return self.__iea_calculo(
+            self.__mc_calculo(calcula_materias),
+            self.__iech_calculo(calcula_materias),
+            self.__iepl_calculo(int(carga_horaria)))
+
+    def __ira_calculo(self, materias_cursadas):
+        total_nota = 0
+        total_carga_horaria = 0
+        for materia in materias_cursadas:
+            if materia[3] != '--':
+                total_nota += int(materia[2])*float(materia[3])
+                total_carga_horaria += int(materia[2])
+
+        return round(total_nota / total_carga_horaria, 4)
+
+    def calcular_ira(self, codigo, carga_horaria):
+        materia = list([codigo, str(carga_horaria)])
+        materia.insert(0, "APR")
+        materia.append('6.0')
+        calcula_materias = self.materias_aluno_cursadas.copy()
+        calcula_materias.append(materia)
+        return self.__ira_calculo(calcula_materias)
+
+    def calcular_varias_materias_iea(self, lista_materias):
+        calcula_materias = self.materias_aluno_cursadas.copy()
+        for mat in lista_materias:
+            mat = list([mat[0], str(mat[1])])
+            mat.insert(0, "APR")
+            mat.append('6.0')
+            calcula_materias.append(mat)

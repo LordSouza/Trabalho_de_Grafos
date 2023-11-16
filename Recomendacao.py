@@ -33,13 +33,32 @@ class Recomendacao:
                 self.todas_disciplinas,
                 aluno.materias_aprovadas)
 
+        self.gerar()
+
+    # recomendacao
     def gerar(self):
-        # recomendacao de obrigatorias
-        for materia in self.curso.materias_nao_concluidas:
-            if materia["CODIGO"] not in self.aluno.materias_aprovadas and len(self.materias_recomendadas) < 5:
-                self.materias_recomendadas.append(
-                    materia["CODIGO"], materia["DISCIPLINA"])
-        pass
+        self.materias_recomendadas
+        listaIndice = []
+        listaIndiceIRA = []
+        self.CargaH = 0
+        self.CargaH_Total = 0
+        obrigatorias_disponiveis = self.curso.materias_possiveis.copy()
+
+        for materia in obrigatorias_disponiveis:
+            self.CargaH = int(materia[3])
+            materia.append(
+                self.aluno.calcular_iea(materia[0], self.CargaH))
+            materia.append(
+                self.aluno.calcular_ira(materia[0], self.CargaH))
+            if materia[6] == True:
+                materia[6] = "SEMESTRAL"
+            elif materia[6] == False:
+                materia[6] = "ANUAL"
+
+        def sort_internal(e):
+            return e[-1]
+        obrigatorias_disponiveis.sort(key=sort_internal, reverse=False)
+        ic(obrigatorias_disponiveis)
 
     def adicionar_conflito(self, materias_com_conflito):
         self.materias_com_conflito = materias_com_conflito

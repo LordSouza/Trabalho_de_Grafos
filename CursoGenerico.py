@@ -14,7 +14,6 @@ class CursoGenerico:
         self.__semestralidade()
         self.__materias_nao_concluidas()
         self.__gerar_lista_materias_possiveis()
-        # self.__calcularLiberam()
 
     def __substituir_equivalentes(self):
         # Criar dicionários para equivalentes
@@ -78,31 +77,3 @@ class CursoGenerico:
                 if mat not in lista_codigo_concluidas:
                     self.materias_possiveis.remove(materia)
                     break
-
-    def __calcularLiberam(self):
-        # Cria um dicionario com o index sendo CODIGO da materia e os seus pre-requisitos como valores
-        requisitos = {}
-        for materias in self.materias_possiveis:
-            requisitos[materias[0]] = materias[-2]
-
-        self.materias_possiveis_com_pesos = self.materias_possiveis.copy()
-
-        # Gera um vetor com todas as vezes que uma materia esta presente no Pre-requisito
-        liberam = []
-        for codigo, dependentes in requisitos.items():
-            if requisitos[codigo] != "-":
-                dependentes = dependentes.split(", ")
-                for mat in dependentes:
-                    liberam.append(mat)
-
-        # Faz a soma das materias de acordo com quantas vezes ela aparece no vetor
-        for i in range(len(self.materias_possiveis_com_pesos)):
-            self.materias_possiveis_com_pesos[i].append(
-                len(liberam[i].split("\n")))
-
-        # Ordena de modo que as disciplinas com mais 'Ligações' estejam acima
-        def internal_sort(e):
-            return e[-1]
-
-        self.materias_possiveis_com_pesos.sort(
-            reverse=False, key=internal_sort)
